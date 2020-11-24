@@ -34,7 +34,7 @@ class ClientStarter(object):
 class Client(object):
     def __init__(self, Network, port, dispatcher_address, **kwargs):
         self.client = Network(
-            "",
+            '',
             port,
             self.__client_request_handler
         )
@@ -50,7 +50,7 @@ class Client(object):
         try:
             self.client.serve_forever()
         except KeyboardInterrupt:
-            logger.info("Обработка остановки клиента")
+            logger.info('Обработка остановки клиента')
 
     def stop(self):
         self.alive = False
@@ -70,15 +70,15 @@ class Client(object):
                 tasks_time.append(task.time_done - task.time_created)
 
         total_tasks = total_solved + total_unsolved
-        logger.info("Запросов отправлено {}".format(total_tasks))
+        logger.info('Запросов отправлено {}'.format(total_tasks))
 
         if total_solved > 0:
             avg_time = sum(tasks_time) / total_solved
-            logger.info("Запросов решено {}".format(total_solved))
-            logger.info("Запросов не решено {}".format(total_unsolved))
-            logger.info("Минимальное время {}".format(min(tasks_time)))
-            logger.info("Среднее время {}".format(avg_time))
-            logger.info("Максимальное время {}".format(max(tasks_time)))
+            logger.info('Запросов решено {}'.format(total_solved))
+            logger.info('Запросов не решено {}'.format(total_unsolved))
+            logger.info('Минимальное время {}'.format(min(tasks_time)))
+            logger.info('Среднее время {}'.format(avg_time))
+            logger.info('Максимальное время {}'.format(max(tasks_time)))
 
 
     def __generate_task(self):
@@ -92,12 +92,12 @@ class Client(object):
 
                 new_command = {}
                 new_command['method'] = 'add_task'
-                new_command['parameters'] = {"task_id": task_id}
+                new_command['parameters'] = {'task_id': task_id}
 
                 self.client.send_command(adress=self.dispatcher_address, data=new_command)
                 self.tasks_dict[task_id] = new_task
             except:
-                logger.info("Ошибка при генерации задания")
+                logger.info('Ошибка при генерации задания')
 
 
     def __client_request_handler(self, message, addr):
@@ -106,7 +106,7 @@ class Client(object):
             completed_task = self.tasks_dict.get(task_id)
 
             if completed_task is None:
-                logger.error("Передали задачу клиенту, которую он не отправлял. ID задачи {}".format(task_id))
+                logger.error('Передали задачу клиенту, которую он не отправлял. ID задачи {}'.format(task_id))
             else:
                 completed_task.time_done = time.time()
                 completed_task.status = ClientTaskStatus.done
@@ -115,7 +115,7 @@ class Client(object):
 
 if __name__ == '__main__':
     
-    logging.basicConfig(level=logging.DEBUG, format="%(asctime)s | %(name)s | %(message)s")
+    logging.basicConfig(level=logging.DEBUG, format='%(asctime)s | %(name)s | %(message)s')
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)
     logger.name = 'CLIENT'

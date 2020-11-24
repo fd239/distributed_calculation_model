@@ -66,7 +66,7 @@ class CalculatorStarter(object):
 class Calculator(object):
     def __init__(self, dispatcher_adress, port, **kwargs):
         self.client = Network(
-            "",
+            '',
             port,
             self.__calculator_request_handler
         )
@@ -117,17 +117,17 @@ class Calculator(object):
                     self.task = None
                     continue
 
-                logger.info("Задача выполнена калькулятором за {} сек.".format(task_time))
+                logger.info('Задача выполнена калькулятором за {} сек.'.format(task_time))
 
                 new_command = {}
-                new_command['method'] = "task_calculated"
-                new_command['parameters'] = {"task_id": self.task}
+                new_command['method'] = 'task_calculated'
+                new_command['parameters'] = {'task_id': self.task}
 
                 try:
                     self.client.send_command(adress=self.dispatcher_adress, data=new_command)
-                    logger.info("Отправили ответ об успешном выполнении диспетчеру")
+                    logger.info('Отправили ответ об успешном выполнении диспетчеру')
                 except:
-                    logger.info("Ошибка отправки ответа об успешном выолнении диспетчеру")
+                    logger.info('Ошибка отправки ответа об успешном выолнении диспетчеру')
 
                 self.status = CalculatorStatus.ready
                 # TODO: Подумать, возможно лучше текущую задачу делать пустой строкой
@@ -136,13 +136,13 @@ class Calculator(object):
     def __send_status(self):
         try:
             new_command = {}
-            new_command['method'] = "calculator_status"
-            new_command['parameters'] = {"status": self.status}
+            new_command['method'] = 'calculator_status'
+            new_command['parameters'] = {'status': self.status}
 
             self.client.send_command(adress=self.dispatcher_adress, data=new_command)
-            logger.info("Отправили текущий статус диспетчеру")
+            logger.info('Отправили текущий статус диспетчеру')
         except:
-            logger.error("Ошибка отправки статуса диспетчеру")
+            logger.error('Ошибка отправки статуса диспетчеру')
 
     def __send_status_thread(self, disability_event, delay=None):
         while not disability_event.isSet():
@@ -153,7 +153,7 @@ class Calculator(object):
 
 if __name__ == '__main__':
 
-    logging.basicConfig(level=logging.DEBUG, format="%(asctime)s | %(name)s | %(message)s")
+    logging.basicConfig(level=logging.DEBUG, format='%(asctime)s | %(name)s | %(message)s')
     logger = logging.getLogger()
     logger.name = 'CALCULATOR'
 

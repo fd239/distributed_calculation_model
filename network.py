@@ -3,7 +3,6 @@ import socket
 import json
 import threading
 import logging
-import uuid
 from collections import OrderedDict
 
 logger = logging.getLogger(str(__name__).upper())

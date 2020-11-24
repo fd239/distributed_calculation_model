@@ -43,7 +43,7 @@ class Dispatcher(object):
             threading.Thread(target=self.__handle_tasks_queue).start()
             self.client.serve_forever()
         except KeyboardInterrupt:
-            logger.info("Обработка остановки диспетчера")
+            logger.info('Обработка остановки диспетчера')
 
     def stop(self):
         self.alive = False
@@ -61,7 +61,7 @@ class Dispatcher(object):
             # TODO: Здесь подумать над реализацией, можно проще
             while self.alive:
                 with self.lock:
-                    #TODO: какой-то баг с task_key когда >5 клиентов, возможно поменять task_key
+                    # TODO: какой-то баг с task_key когда >5 клиентов, возможно поменять task_key
                     for task_key, task in self.tasks_dict.iteritems():
                         if task.status == DispatcherTaskStatus.new or \
                                 task.status == DispatcherTaskStatus.calculation_timeout:
@@ -69,8 +69,8 @@ class Dispatcher(object):
                                 if calculator.status == CalculatorStatus.ready:
                                     try:
                                         new_command = {}
-                                        new_command['method'] = "perform_task"
-                                        new_command['parameters'] = {"task_id": task_key}
+                                        new_command['method'] = 'perform_task'
+                                        new_command['parameters'] = {'task_id': task_key}
 
                                         self.client.send_command(adress=calculator.adress, data=new_command)
 
@@ -80,25 +80,25 @@ class Dispatcher(object):
 
                                         calculator.status = CalculatorStatus.busy
 
-                                        logger.info("Отправили задачу калькулятору")
+                                        logger.info('Отправили задачу калькулятору')
 
                                         break
                                     except Exception as e:
-                                        logger.error("Не удалось отправить задачу калькулятору {}".format(e))
+                                        logger.error('Не удалось отправить задачу калькулятору {}'.format(e))
 
                         elif task.status == DispatcherTaskStatus.calculated:
                             try:
                                 new_command = {}
-                                new_command['method'] = "task_done"
-                                new_command['parameters'] = {"task_id": task_key}
+                                new_command['method'] = 'task_done'
+                                new_command['parameters'] = {'task_id': task_key}
 
                                 self.client.send_command(adress=task.client_adress, data=new_command)
 
                                 task.status = DispatcherTaskStatus.sent_to_client
 
-                                logger.info("Отправили завершенную задачу клиенту")
+                                logger.info('Отправили завершенную задачу клиенту')
                             except:
-                                logger.error("Не удалось отправить завершенную задачу клиенту")
+                                logger.error('Не удалось отправить завершенную задачу клиенту')
 
                         elif task.status == DispatcherTaskStatus.sent_to_calculator:
                             if (time.time() - task.calculation_start_time) > self.task_max_calculate_time:
@@ -121,15 +121,15 @@ class Dispatcher(object):
         task = self.tasks_dict.get(task_id)
 
         if task is None:
-            logger.error("Передана задача, которой не было в диспетчере. Ключ задачи".format(task_id))
+            logger.error('Передана задача, которой не было в диспетчере. Ключ задачи'.format(task_id))
         else:
             task.status = DispatcherTaskStatus.calculated
             task_calculator = self.calculators.get(task.calculator_adress)
             if task_calculator is None:
-                logger.error("Ошибка установки свойства калькулятора")
+                logger.error('Ошибка установки свойства калькулятора')
             else:
                 task_calculator.status = CalculatorStatus.ready
-                logger.info("Обновили статус калькулятора на ready")
+                logger.info('Обновили статус калькулятора на ready')
 
     def set_calculator_status(self, message, addr):
         calculator_address = addr
@@ -138,15 +138,15 @@ class Dispatcher(object):
         if calculator is None:
             new_calculator = CalculatorInfo(addr, new_status)
             self.calculators[calculator_address] = new_calculator
-            logger.info("Добавлен новый вычислитель {}".format(calculator_address))
+            logger.info('Добавлен новый вычислитель {}'.format(calculator_address))
         else:
             calculator.status = new_status
-            logger.info("Обновлен статус вычислителя {}. Новый статус {}".format(calculator_address, new_status))
+            logger.info('Обновлен статус вычислителя {}. Новый статус {}'.format(calculator_address, new_status))
 
 
 if __name__ == '__main__':
 
-    logging.basicConfig(level=logging.DEBUG, format="%(asctime)s | %(name)s | %(message)s")
+    logging.basicConfig(level=logging.DEBUG, format='%(asctime)s | %(name)s | %(message)s')
     logger = logging.getLogger()
     logger.name = 'DISPATCHER'
 

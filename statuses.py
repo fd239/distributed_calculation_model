@@ -1,5 +1,4 @@
 # coding: utf8
-
 class ClientTaskStatus(object):
     new = 0
     done = 1
