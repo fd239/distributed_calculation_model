@@ -1,0 +1,22 @@
+version: "3.7"
+
+services:
+
+  dispatcher:
+    build: dispatcher/
+    command: python ./dispatcher.py
+    network_mode: host
+
+  calculator:
+    build: calculator/
+    command: python ./calculator.py
+    network_mode: host
+    depends_on:
+      - dispatcher
+
+  client:
+    build: client/
+    command: python ./client.py
+    network_mode: host
+    depends_on:
+      - dispatcher

@@ -1,0 +1,4 @@
+{
+  "addr": ["localhost", 3000],
+  "task_max_calculate_time": 30
+}

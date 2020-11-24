@@ -1,0 +1,8 @@
+{
+    "dispatcher": ["localhost", 3000],
+    "task_time_interval": [3, 6],
+    "disability_chance": 20,
+    "disability_timer_interval": [5, 10],
+    "disability_check_time": 20,
+    "status_update_time": 10
+}

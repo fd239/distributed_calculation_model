@@ -1,0 +1,5 @@
+{
+  "dispatcher": ["localhost", 3000],
+  "create_task_interval": [5, 9],
+  "client_alive_time_limit": 90
+}
