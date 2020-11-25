@@ -12,12 +12,12 @@
 
 Формат пакетов - JSON
 
-Для запуска проекта `docker-compose up`
+Для запуска проекта в docker `docker-compose up`
 
 Для запуска проекта через консоль
-* `python dispatcher.py`
-* `python calculator.py`
-* `python client.py`
+- `python dispatcher.py`
+- `python calculator.py`
+- `python client.py`
 
 * Диспетчер запускатеся на localhost: 3000
 * Калькулятор запускатеся на localhost: 3009
